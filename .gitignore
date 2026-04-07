@@ -1,0 +1,4 @@
+.venv/
+*.csv
+# Streams de Windows
+*:Zone.Identifier
