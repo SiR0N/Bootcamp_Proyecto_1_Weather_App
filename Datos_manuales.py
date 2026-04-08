@@ -1,14 +1,17 @@
 print("=== Registro Meteorológico ===")
 
-fecha = input("Fecha (DD/MM/AAAA): ")
+from datetime import datetime
+
+fecha_texto = input("Introduce la fecha y hora (dd/mm/yyyy HH:MM): ")
+fecha = datetime.strptime(fecha_texto, "%d/%m/%Y %H:%M")
 zona = input("Zona: ")
-temperatura = input("Temperatura (°C): ")
-humedad = input("Humedad (%): ")
-viento = input("Viento (km/h): ")
+temperatura = float(input("Temperatura (°C): "))
+humedad = int(input("Humedad (%): "))
+viento = int(input("Viento (km/h): "))
 
 
 registro = {
-    "Fecha": fecha,
+    "Fecha": fecha.strftime("%d/%m/%Y %H:%M"),
     "Zona": zona,
     "Temperatura (°C)": temperatura,
     "Humedad (%)": humedad,
