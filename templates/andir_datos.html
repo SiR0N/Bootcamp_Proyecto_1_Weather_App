@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Madrid Weather Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="main-dashboard-wrapper">
+      <nav class="sidebar">
+        <div class="logo-container">
+          <span class="logo-text">LOGO</span>
+        </div>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">
+              <i class="fas fa-home"></i>
+              <span class="nav-text">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link active">
+              <i class="fas fa-plus"></i>
+              <span class="nav-text">Añadir Datos</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fas fa-file-invoice"></i>
+              <span class="nav-text">Informes</span>
+            </a>
+          </li>
+        </ul>
+        <div class="bottom-content">
+          <a href="#" class="nav-link">
+            <i class="fas fa-cog"></i> <span class="nav-text">Settings</span>
+          </a>
+        </div>
+      </nav>
+
+      <main class="content-area">
+        <div class="action-bar">
+          <div class="import-group">
+            <label class="import-btn">
+              <i class="fas fa-file-code"></i> Importar JSON
+              <input type="file" id="json-upload" hidden />
+            </label>
+            <label class="import-btn">
+              <i class="fas fa-file-csv"></i> Importar CSV
+              <input type="file" id="csv-upload" hidden />
+            </label>
+          </div>
+          <button class="add-btn-primary">
+            <i class="fas fa-plus"></i> Añadir Nuevo Registro
+          </button>
+        </div>
+
+        <div class="data-view-container">
+          <div class="table-labels">
+            <span>Fecha</span>
+            <span>Estación</span>
+            <span>Valor</span>
+            <span>Comentarios</span>
+            <span>Acciones</span>
+          </div>
+
+          <div class="view-row">
+            <span class="cell-date">09/04/2026</span>
+            <span class="cell-station">Ciudad Universitaria</span>
+            <span class="cell-value">21.5°C</span>
+            <span class="cell-comment">Día despejado, viento leve.</span>
+            <div class="cell-actions">
+              <i class="fas fa-edit"></i>
+              <i class="fas fa-trash"></i>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
