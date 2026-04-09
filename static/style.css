@@ -139,13 +139,23 @@ body {
 }
 
 .banner {
-    height: 80px;
-    background-color: #ffffff;
-    border-bottom: 2px solid #003366;
-    padding: 10px 30px;
+
+    padding: 20px 4px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+    width: 100%; /* It now fills the wrapper, not the whole screen */
+}
+
+.banner h1 {
+    color: #003366;
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.banner p {
+    color: #6c757d;
+    margin: 5px 0 0 0;
 }
 
 .summary-container {
@@ -747,3 +757,4 @@ body {
 .cell-actions i {
     cursor: pointer;
 }
+
