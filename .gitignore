@@ -1,4 +1,6 @@
 .venv/
 *.csv
+!300352-180-meteorologicos-horarios-csv.csv
+*.json
 # Streams de Windows
 *:Zone.Identifier
