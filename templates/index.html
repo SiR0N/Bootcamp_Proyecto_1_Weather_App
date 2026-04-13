@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en">
+<html lang="es-ES">
+  <meta charset="UTF-8">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,6 +16,9 @@
     <link rel="stylesheet" href="/static/style.css" />
   </head>
   <body>
+
+    <!-- create a sidebar -->
+    <!-- should contain dasboard, adding data, reports and settings -->
     <nav class="sidebar">
       <div class="logo-container">
         <span class="nav-text logo-text">Logo</span>
@@ -22,13 +26,13 @@
 
       <ul class="nav-list">
         <li class="nav-item">
-          <a href="#" class="nav-link active">
+          <a href="/" class="nav-link active">
             <i class="fas fa-home"></i> <span class="nav-text">Dashboard</span>
           </a>
         </li>
 
         <li class="nav-item">
-          <a href="/templates/andir_datos.html" class="nav-link">
+          <a href="/add_data" class="nav-link">
             <i class="fas fa-plus"></i>
 
             <span class="nav-text">Andir Datos</span>
@@ -52,7 +56,7 @@
         </li>
       </div>
     </nav>
-
+<!-- Dashoard creation which contain summaries and map for visualization and emergencies phone numbers -->
     <main class="main-content">
       <header class="banner">
         <h1>Bienvenido, Jose</h1>
@@ -112,7 +116,7 @@
 
           <div class="footer-dashboard-grid">
             <div class="footer-column">
-
+         <!-- Emergency Woki Toki -->
             <div class="footer-column">
               <h3 class="section-title">
                 <i class="fas fa-phone-alt"></i> Teléfonos de Interés
