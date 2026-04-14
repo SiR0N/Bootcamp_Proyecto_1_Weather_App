@@ -311,7 +311,15 @@ body {
     flex-shrink: 0;
 }
 
-.temp .rank-icon { background: #fff5f5; color: #ff4757; }
+.rank-icon i {
+    color: inherit;
+}
+
+.rank-card.temp {
+    background-image: none !important;
+}
+
+.temp .rank-icon { background: #fff5f5; color: #fa0318; }
 .hum .rank-icon { background: #f0f7ff; color: #0096d2; }
 .wind .rank-icon { background: #f2fff6; color: #2ed573; }
 

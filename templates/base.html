@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- Iconos y estilos globales -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4RZb6YkYbR6V0w3AV/QxskZl8vZpKf0eJk5j0r5V0w3AV/QxskZl8vZpKf0eJk5j0r5V0w=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+/>
+</head>
+
+<body>
+<div class="main-dashboard-wrapper">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+        <div class="logo-container">
+            <span class="logo-text">LOGO</span>
+        </div>
+
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="/" class="nav-link {% if active == 'dashboard' %}active{% endif %}">
+                    <i class="fas fa-home"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="/añadir-datos" class="nav-link {% if active == 'add' %}active{% endif %}">
+                    <i class="fas fa-plus"></i>
+                    <span class="nav-text">Añadir Datos</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="/informes" class="nav-link {% if active == 'informes' %}active{% endif %}">
+                    <i class="fas fa-file-invoice"></i>
+                    <span class="nav-text">Informes</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="bottom-content">
+            <a href="#" class="nav-link">
+                <i class="fas fa-cog"></i>
+                <span class="nav-text">Settings</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- CONTENIDO DE CADA PÁGINA -->
+    <main class="content-area">
+        {% block content %}{% endblock %}
+    </main>
+
+</div>
+
+<!-- Scripts globales -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/static/script.js"></script>
+
+</body>
+</html>

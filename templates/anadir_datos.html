@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Añadir Datos{% endblock %}
+
+{% block content %}
+
+<div class="action-bar">
+    <div class="import-group">
+        <form id="upload-json-form" enctype="multipart/form-data">
+            <label class="import-btn">
+                <i class="fas fa-file-code"></i> Importar JSON
+                <input type="file" id="json-upload" name="file" hidden>
+            </label>
+        </form>
+
+        <label class="import-btn">
+            <i class="fas fa-file-csv"></i> Importar CSV
+            <input type="file" id="csv-upload" hidden>
+        </label>
+    </div>
+
+    <button class="add-btn-primary">
+        <i class="fas fa-plus"></i> Añadir Nuevo Registro
+    </button>
+</div>
+
+<div class="data-view-container">
+    <div class="table-labels">
+        <span>Fecha</span>
+        <span>Estación</span>
+        <span>Valor</span>
+        <span>Comentarios</span>
+        <span>Acciones</span>
+    </div>
+
+    <div class="view-row">
+        <span class="cell-date">09/04/2026</span>
+        <span class="cell-station">Ciudad Universitaria</span>
+        <span class="cell-value">21.5°C</span>
+        <span class="cell-comment">Día despejado, viento leve.</span>
+        <div class="cell-actions">
+            <i class="fas fa-edit"></i>
+            <i class="fas fa-trash"></i>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

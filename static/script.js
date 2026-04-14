@@ -6,72 +6,69 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "&copy; OpenStreetMap contributors",
 }).addTo(map);
 
-// 3. Fetch Data and Calculate Averages
-fetch("/static/weather_history.json")
-  .then((response) => {
-    if (!response.ok) throw new Error("Check if JSON is in the static folder!");
-    return response.json();
-  })
-  .then((data) => {
-    let t = 0,
-      h = 0,
-      w = 0;
-    const count = data.length;
+fetch("/get_data")
+  .then(r => r.json())
+  .then(data => renderTable(data));
 
-    data.forEach((station) => {
-      // Accumulate totals
-      t += parseFloat(station.temp || 0);
-      h += parseFloat(station.humidity || 0);
-      w += parseFloat(station.wind || 0);
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("/get_data")
+    .then(r => r.json())
+    .then(data => renderTable(data));
+});
 
-      // Add markers to map for visual reference
-      L.marker([station.lat, station.lon])
-        .addTo(map)
-        .bindPopup(`<b>${station.name}</b><br>ID: ${station.id}`);
+async function cargarDashboard() {
+  const resp = await fetch("/api/dashboard");
+  const data = await resp.json();
+
+  // --- MAPA ---
+  data.estaciones.forEach(st => {
+    const fecha = new Date(st.fecha);
+    const fechaFormateada = fecha.toLocaleString("es-ES", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
     });
 
-    // Create array for the 3 summary cards
-    const stats = [
-      {
-        id: "avg-temp",
-        val: (t / count).toFixed(1) + "°C",
-        label: "Temperatura Media",
-        icon: "fa-temperature-high",
-      },
-      {
-        id: "avg-hum",
-        val: (h / count).toFixed(0) + "%",
-        label: "Humedad Media",
-        icon: "fa-tint",
-      },
-      {
-        id: "avg-wind",
-        val: (w / count).toFixed(1) + " km/h",
-        label: "Viento Medio",
-        icon: "fa-wind",
-      },
-    ];
+    const popup = createPopupContent(
+      st.name, st.id, st.temperature, st.humidity, st.wind_speed, fechaFormateada
+    );
 
-    // Inject content with the "Project Card" design
-    stats.forEach((s) => {
-      const element = document.getElementById(s.id);
-      if (element) {
-        element.innerHTML = `
-              <div class="card-top">
-                <span class="station-name">MADRID TOTAL</span>
-                <div class="icon-circle"><i class="fas fa-chart-line"></i></div>
-              </div>
-              <div class="main-stats">
-                <span class="stat-value">${s.val}</span>
-                <div class="stat-label">
-                    <i class="fas ${s.icon}"></i> ${s.label}
-                </div>
-              </div>
-            `;
-      }
-    });
-  })
-  .catch((err) => console.error(err));
+    L.marker([st.lat, st.lon])
+      .addTo(map)
+      .bindTooltip(popup, {
+        className: "custom-card-tooltip",
+        sticky: true,
+        direction: "top",
+      });
+  });
+
+  // --- MEDIAS ---
+  const m = data.medias;
+  document.getElementById("avg-temp-value").textContent =
+    `${m.avg_temp.toFixed(1)} °C`;
+
+  document.getElementById("avg-hum-value").textContent =
+    `${m.avg_hum.toFixed(0)} %`;
+
+  document.getElementById("avg-wind-value").textContent =
+    `${m.avg_wind.toFixed(1)} km/h`;
+
+  // --- RANKING ---
+  const k = data.ranking;
+  document.getElementById("top-temp-name").textContent = k.top_temp.name;
+  document.getElementById("top-temp-val").textContent = `${k.top_temp.value}°C`;
+
+  document.getElementById("top-hum-name").textContent = k.top_hum.name;
+  document.getElementById("top-hum-val").textContent = `${k.top_hum.value}%`;
+
+  document.getElementById("top-wind-name").textContent = k.top_wind.name;
+  document.getElementById("top-wind-val").textContent = `${k.top_wind.value} km/h`;
+}
+
+cargarDashboard();
+
 
 // 4. Handle Layout Shifts
 window.addEventListener("load", () => {
@@ -81,11 +78,13 @@ window.addEventListener("load", () => {
 });
 
 // 1. Create the Card Template
-function createPopupContent(name, id, temp, hum, wind) {
+function createPopupContent(name, id, temp, hum, wind, fecha) {
   // We use ternary operators to show '--' if data is missing from DB
   return `
         <div class="hover-card">
             <div class="card-header">${name}</div>
+            <div class="card-date">📅 ${fecha}</div>
+
             <div class="card-body">
                 <div class="stat-row">
                     <i class="fas fa-thermometer-half temp-icon"></i>
@@ -105,50 +104,39 @@ function createPopupContent(name, id, temp, hum, wind) {
     `;
 }
 
-// 2. Fetch from your local JSON (which your DB will write to)
-async function loadStations() {
-  try {
-    const response = await fetch("/static/weather_history.json");
-    const stations = await response.json();
 
-    stations.forEach((station) => {
-      // These variable names should match the keys your database creates
-      const cardHtml = createPopupContent(
-        station.name,
-        station.id,
-        station.temperature, // DB Column: temperature
-        station.humidity, // DB Column: humidity
-        station.wind_speed, // DB Column: wind_speed
-      );
-
-      L.marker([station.lat, station.lon]).addTo(map).bindTooltip(cardHtml, {
-        className: "custom-card-tooltip",
-        sticky: true,
-        direction: "top",
-      });
-    });
-  } catch (error) {
-    console.error("Database connection error or file missing:", error);
-  }
-}
-
-loadStations();
 
 // Example listener for CSV upload
 document.getElementById("csv-upload").addEventListener("change", function (e) {
   const file = e.target.files[0];
-  if (file) {
-    console.log("CSV detectado:", file.name);
-    // Add your parsing logic here to update the weather_history.json
-    // or refresh the table view.
-  }
+  const formData = new FormData();
+  formData.append("file", file);
+
+  fetch("/upload_csv", {
+    method: "POST",
+    body: formData
+  })
+  .then(r => r.json())
+  .then(data => console.log("Servidor:", data));
+
 });
 
 // Example listener for JSON upload
 document.getElementById("json-upload").addEventListener("change", function (e) {
   const file = e.target.files[0];
-  if (file) {
-    console.log("JSON detectado:", file.name);
-    // Add your parsing logic here.
-  }
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  fetch("/upload_json", {
+    method: "POST",
+    body: formData
+  })
+    .then(r => r.json())
+    .then(data => {
+      console.log("Servidor:", data);
+      alert("JSON procesado correctamente");
+    });
+
 });
