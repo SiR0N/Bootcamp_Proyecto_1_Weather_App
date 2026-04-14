@@ -2,15 +2,15 @@ import pandas as pd
 from myLogs import logger
 
 dataframe = None  # Aquí vivirá tu "base de datos"
-path = "historico_expandido_DB.csv"
+path = "historico.json"
 
-def load_initial_csv(path=path):
+def load_initial_json(path=path):
     global dataframe
-    dataframe = pd.read_csv(path, sep=None, engine="python")
+    dataframe = pd.read_json(path)
     print(dataframe.columns)
     print(dataframe.head())
-    logger.info(f"CSV inicial cargado desde {path} con {len(dataframe)} registros")
-    print("CSV inicial cargado con", len(dataframe), "registros")
+    logger.info(f"JSON inicial cargado desde {path} con {len(dataframe)} registros")
+    print("JSON inicial cargado con", len(dataframe), "registros")
     return dataframe
 
 def append_records(new_df):
@@ -25,6 +25,6 @@ def append_records(new_df):
 
 def save_to_disk(path=path):
     global dataframe
-    dataframe.to_csv(path, index=False)
+    dataframe.to_json(path, orient="records", indent=2)
     logger.info(f"Base de datos guardada en {path} con {len(dataframe)} registros")
     print("Base de datos guardada en disco")
