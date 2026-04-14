@@ -1,0 +1,16 @@
+[
+  {
+    "Fecha":"12\/04\/2020 01:12",
+    "Estacion":"Vallecas",
+    "Temperatura (\u00b0C)":40.0,
+    "Humedad (%)":27.0,
+    "Viento (km\/h)":90.0
+  },
+  {
+    "Fecha":"20\/11\/2025 09:15",
+    "Estacion":"Vicalvaro",
+    "Temperatura (\u00b0C)":40.0,
+    "Humedad (%)":99.0,
+    "Viento (km\/h)":99.0
+  }
+]
