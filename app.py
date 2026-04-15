@@ -5,7 +5,7 @@ import atexit
 
 # Import your custom modules
 import data_store
-from data_store import append_records, save_to_disk, load_initial_csv
+from data_store import append_records, save_to_disk, load_initial_json, load_initial_csv
 from myLogs import logger
 
 # 1. Initialize the Flask App
@@ -15,7 +15,8 @@ app = Flask(__name__)
 logger.info("Flask iniciado correctamente")
 
 # 2. Load initial data
-load_initial_csv()
+app = Flask(__name__)
+logger.info("Flask iniciado correctamente")
 
 # --- ROUTES: VIEWS ---
 
@@ -139,3 +140,6 @@ def shutdown_log():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+load_initial_json()
+load_initial_csv()
