@@ -1,132 +1,163 @@
-{% extends "base.html" %}
-{% block title %}Dashboard{% endblock %}
+<!doctype html>
+<html lang="es-ES">
+  <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Madrid Weather Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
 
-{% block content %}
+    <!-- create a sidebar -->
+    <!-- should contain dasboard, adding data, reports and settings -->
+    <nav class="sidebar">
+      <div class="logo-container">
+        <span class="nav-text logo-text">Logo</span>
+      </div>
 
-<header class="banner">
-    <h1>Bienvenido, Jose</h1>
-    <p>Resumen Meteorológico de Madrid Capital</p>
-</header>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="/" class="nav-link active">
+            <i class="fas fa-home"></i> <span class="nav-text">Dashboard</span>
+          </a>
+        </li>
 
-<section class="summary-container">
-    <div id="avg-temp" class="madrid-weather-card">
-        <div class="card-top">
-            <div class="icon-circle"><i class="fas fa-temperature-high"></i></div>
-        </div>
-        <div class="main-stats">
-            <span id="avg-temp-value" class="stat-value">-- °C</span>
-            <div class="stat-label">
-                <i class="fas fa-temperature-high"></i> Temperatura Media
-            </div>
-        </div>
-    </div>
+        <li class="nav-item">
+          <a href="/add_data" class="nav-link">
+            <i class="fas fa-plus"></i>
 
-    <div id="avg-hum" class="madrid-weather-card">
-        <div class="card-top">
-            <div class="icon-circle"><i class="fas fa-tint"></i></div>
-        </div>
-        <div class="main-stats">
-            <span id="avg-hum-value" class="stat-value">-- %</span>
-            <div class="stat-label">
-                <i class="fas fa-tint"></i> Humedad Media
-            </div>
-        </div>
-    </div>
+            <span class="nav-text">Andir Datos</span>
+          </a>
+        </li>
 
-    <div id="avg-wind" class="madrid-weather-card">
-        <div class="card-top">
-            <div class="icon-circle"><i class="fas fa-wind"></i></div>
-        </div>
-        <div class="main-stats">
-            <span id="avg-wind-value" class="stat-value">-- km/h</span>
-            <div class="stat-label">
-                <i class="fas fa-wind"></i> Viento Medio
-            </div>
-        </div>
-    </div>
-</section>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="fas fa-file-invoice"></i>
 
-<section class="dashboard">
-    <div id="map"></div>
+            <span class="nav-text">Informes</span>
+          </a>
+        </li>
+      </ul>
 
-    <div class="dashboard-footer-row">
-        <div class="ranking-container">
+      <div class="bottom-content">
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="fas fa-cog"></i> <span class="nav-text">Settings</span>
+          </a>
+        </li>
+      </div>
+    </nav>
+<!-- Dashoard creation which contain summaries and map for visualization and emergencies phone numbers -->
+    <main class="main-content">
+      <header class="banner">
+        <h1>Bienvenido, Jose</h1>
+        <p>Resumen Meteorológico de Madrid Capital</p>
+      </header>
+
+      <section class="summary-container">
+        <div id="avg-temp" class="madrid-weather-card"></div>
+        <div id="avg-hum" class="madrid-weather-card"></div>
+        <div id="avg-wind" class="madrid-weather-card"></div>
+      </section>
+
+      <section class="dashboard">
+        <div id="map"></div>
+        <div class="dashboard-footer-row">
+          <div class="ranking-container">
             <h3 class="section-title">
-                <i class="fas fa-medal"></i> Ranking de Estaciones
+              <i class="fas fa-medal"></i> Ranking de Estaciones
             </h3>
-
             <div class="ranking-grid">
-                <div class="rank-card temp">
-                    <div class="rank-icon"><i class="fas fa-temperature-high"></i></div>
-                    <div class="rank-info">
-                        <span class="rank-category">Calor Extremo</span>
-                        <span id="top-temp-name" class="rank-station">Cargando...</span>
-                        <span id="top-temp-val" class="rank-value">--°C</span>
-                    </div>
+              <div class="rank-card temp">
+                <div class="rank-icon">
+                  <i class="fas fa-thermometer-high"></i>
                 </div>
+                <div class="rank-info">
+                  <span class="rank-category">Calor Extremo</span>
+                  <span id="top-temp-name" class="rank-station"
+                    >Cargando...</span
+                  >
+                  <span id="top-temp-val" class="rank-value">--°C</span>
+                </div>
+              </div>
 
-                <div class="rank-card hum">
-                    <div class="rank-icon"><i class="fas fa-tint"></i></div>
-                    <div class="rank-info">
-                        <span class="rank-category">Más Humedad</span>
-                        <span id="top-hum-name" class="rank-station">Cargando...</span>
-                        <span id="top-hum-val" class="rank-value">--%</span>
-                    </div>
+              <div class="rank-card hum">
+                <div class="rank-icon"><i class="fas fa-tint"></i></div>
+                <div class="rank-info">
+                  <span class="rank-category">Más Humedad</span>
+                  <span id="top-hum-name" class="rank-station"
+                    >Cargando...</span
+                  >
+                  <span id="top-hum-val" class="rank-value">--%</span>
                 </div>
+              </div>
 
-                <div class="rank-card wind">
-                    <div class="rank-icon"><i class="fas fa-wind"></i></div>
-                    <div class="rank-info">
-                        <span class="rank-category">Ráfaga Máxima</span>
-                        <span id="top-wind-name" class="rank-station">Cargando...</span>
-                        <span id="top-wind-val" class="rank-value">-- km/h</span>
-                    </div>
+              <div class="rank-card wind">
+                <div class="rank-icon"><i class="fas fa-wind"></i></div>
+                <div class="rank-info">
+                  <span class="rank-category">Ráfaga Máxima</span>
+                  <span id="top-wind-name" class="rank-station"
+                    >Cargando...</span
+                  >
+                  <span id="top-wind-val" class="rank-value">-- km/h</span>
                 </div>
+              </div>
             </div>
-        </div>
+          </div>
 
-        <div class="footer-dashboard-grid">
+          <div class="footer-dashboard-grid">
             <div class="footer-column">
-                <h3 class="section-title">
-                    <i class="fas fa-phone-alt"></i> Teléfonos de Interés
-                </h3>
+         <!-- Emergency Woki Toki -->
+            <div class="footer-column">
+              <h3 class="section-title">
+                <i class="fas fa-phone-alt"></i> Teléfonos de Interés
+              </h3>
 
-                <div class="emergency-radio-frame">
-                    <div class="radio-screen-overlay">
-                        <div class="screen-header">
-                            <span>📶 VFO</span><span>85% 🔋</span>
-                        </div>
-                        <div class="radio-internal-title">EMERG CHANNELS</div>
-
-                        <div class="channel-list">
-                            <a href="tel:112" class="channel-link">
-                                <div class="channel-row">
-                                    <span class="ch-id">001</span>
-                                    <span class="ch-name">112 EMERG</span>
-                                </div>
-                            </a>
-
-                            <a href="tel:080" class="channel-link">
-                                <div class="channel-row">
-                                    <span class="ch-id">002</span>
-                                    <span class="ch-name">080 FIRE</span>
-                                </div>
-                            </a>
-
-                            <a href="tel:010" class="channel-link">
-                                <div class="channel-row">
-                                    <span class="ch-id">003</span>
-                                    <span class="ch-name">010 AYUNT</span>
-                                </div>
-                            </a>
-                        </div>
-
-                    </div>
+              <div class="emergency-radio-frame">
+                <div class="radio-screen-overlay">
+                  <div class="screen-header">
+                    <span>📶 VFO</span><span>85% 🔋</span>
+                  </div>
+                  <div class="radio-internal-title">EMERG CHANNELS</div>
+                  <div class="channel-list">
+                    <a href="tel:112" class="channel-link">
+                      <div class="channel-row">
+                        <span class="ch-id">001</span>
+                        <span class="ch-name">112 EMERG</span>
+                      </div>
+                    </a>
+                    <a href="tel:080" class="channel-link">
+                      <div class="channel-row">
+                        <span class="ch-id">002</span>
+                        <span class="ch-name">080 FIRE</span>
+                      </div>
+                    </a>
+                    <a href="tel:010" class="channel-link">
+                      <div class="channel-row">
+                        <span class="ch-id">003</span>
+                        <span class="ch-name">010 AYUNT</span>
+                      </div>
+                    </a>
+                  </div>
                 </div>
-
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-</section>
+      </section>
+      
+    </main>
 
-{% endblock %}
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/static/script.js"></script>
+  </body>
+</html>
